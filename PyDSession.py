@@ -57,7 +57,14 @@ class PyDSession(PyDAbsSession):
             data[key+"Id"]= js[key]["id"] if js[key] else None
         data["computeIsNewPeriodAgain"]=None
         data["checkPeriodicalCoherency"]=True
-        data["trap"]=js["bibRecord"]["trap"] if "trap" in js["bibRecord"] else None
+        data["trap"]=js["trap"] if "trap" in js else None
+        if data["trap"]:
+            toremove=[]
+            for key in data["trap"]:
+                if not key in ["content", "blockingLoan", "visibleInLoan", "visibleInReturn"]:
+                    toremove.append(key)
+            for key in toremove:
+                del data["trap"][key]
 
         url=self.url("/index.php", {"_action_":"backend"})
         data=utils.encode_dict({

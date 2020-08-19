@@ -1,8 +1,8 @@
 import requests
 import PyDCoteChanger
+import PyDb
 
 
-
-session = PyDCoteChanger.PyDCoteChanger(fct=PyDCoteChanger.space_to_tiret)
+session = PyDCoteChanger.PyDCoteChanger()
 session.connect()
-print(session.replace_from_file("test"))
+print(session.replace_from_file("exemplaires.txt"))
