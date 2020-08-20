@@ -66,6 +66,9 @@ class PyDSession(PyDAbsSession):
             for key in toremove:
                 del data["trap"][key]
 
+        with open("sources/%s.sent.json" % data["code"], "w") as f:
+            f.write(json.dumps(data, indent=2))
+
         url=self.url("/index.php", {"_action_":"backend"})
         data=utils.encode_dict({
             "path": "/networks/" + self.config["network"] + "/libraries/" + self.config["library"] + "/catalog/bibRecords/items/job/addOrUpdate",

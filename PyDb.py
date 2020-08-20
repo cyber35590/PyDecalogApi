@@ -31,6 +31,7 @@ class LogEntry:
         self.code=code
         self.before=""
         self.after=""
+        self.sent=""
         self.diff=""
 
     def set_before(self, obj):
@@ -39,6 +40,10 @@ class LogEntry:
     def set_after(self, obj):
         self.after=json.dumps(obj, indent=2)
         self.diff=diff(self.before, self.after)
+
+    def set_sent(self, obj):
+        self.sent=json.dumps(obj, indent=2)
+
 
 
 class PyDb:
@@ -64,6 +69,7 @@ class PyDb:
             x.before=decode(row[2])
             x.after=decode(row[3])
             x.diff=decode(row[4])
+            x.sent=decode(row[5])
             out[x.code]=x
         return out
 
@@ -77,6 +83,7 @@ class PyDb:
             x.before=decode(row[2])
             x.after=decode(row[3])
             x.diff=decode(row[4])
+            x.sent=decode(row[5])
             out[x.code]=x
         return out
 
@@ -85,7 +92,7 @@ class PyDb:
         if l.id<0:
             l.id=self.current_id
 
-        self.execute("insert into operation (id, code, before, after, diff) values (%d, '%s', '%s', '%s', '%s')" %(l.id, l.code, encode(l.before), encode(l.after), encode(l.diff)))
+        self.execute("insert into operation (id, code, before, after, diff, sent) values (%d, '%s', '%s', '%s', '%s', '%s')" %(l.id, l.code, encode(l.before), encode(l.after), encode(l.diff), encode(l.sent)))
         self.commit()
 
     def tables(self):
